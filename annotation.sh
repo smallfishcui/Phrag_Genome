@@ -1,4 +1,4 @@
-#mahti
+#
 singularity run dfam-tetools-latest.sif BuildDatabase -engine ncbi -name phrag Pa_noorganelle.asm.bp.p_ctg.wrapped.FINAL.sorted.gapclose.finalrenamed.fasta
 singularity run dfam-tetools-latest.sif RepeatModeler -database phrag -engine ncbi -threads 128 
 #make sure you softlink the classified file, otherwise you will not get a table of classified elements after the run.
@@ -6,7 +6,7 @@ ln -s ./RM_3026906.WedApr170825472024/consensi.fa.classified .
 #softmaskinng
 singularity run dfam-tetools-latest.sif  RepeatMasker -pa 32 -xsmall -lib consensi.fa.classified Pa_noorganelle.asm.bp.p_ctg.wrapped.FINAL.sorted.gapclose.finalrenamed.fasta
 
-#gemoma, mahti
+#gemoma
 cd ./gemoma
 java -jar -Xmx200000m GeMoMa-1.9.jar CLI GeMoMaPipeline threads=128 outdir=./Pa_annot_Osativ GeMoMa.Score=ReAlign AnnotationFinalizer.r=NO o=true t=./rice/Pa_noorganelle.asm.bp.p_ctg.wrapped.FINAL.sorted.gapclose.finalrenamed.fasta a=./rice/GCF_001433935.1_IRGSP-1.0_genomic.gff g=./rice/GCF_001433935.1_IRGSP-1.0_genomic.fna r=MAPPED ERE.m=/scratch/project_2009273/RNAseq/merged_20.bam &> Pa_Osat_ann.log
 srun java -jar -Xmx200000m GeMoMa-1.9.jar CLI GeMoMaPipeline threads=128 outdir=./Pa_annot_Phalli GeMoMa.Score=ReAlign AnnotationFinalizer.r=NO o=true t=./Phalli/Pa_noorganelle.asm.bp.p_ctg.wrapped.FINAL.sorted.gapclose.finalrenamed.fasta a=./Phalli/Phallii_590_v3.2.gene.gff3 g=./Phalli/Phallii_590_v3.0.fa r=MAPPED ERE.m=/scratch/project_2009273/RNAseq/merged_20.bam &> Pa_Phalli_ann.log
@@ -18,7 +18,7 @@ perl ./GeMoMa_gff_to_gff3.pl ./Pa_annot_Phalli/final_annotation.gff > Phalli_gem
 perl ./GeMoMa_gff_to_gff3.pl ./Pa_annot_Sbicolor/final_annotation.gff > Sbicolor_gemoma_evm_mod.gff3
 perl ./GeMoMa_gff_to_gff3.pl ./Pa_annot_Sviridis/final_annotation.gff > Sviridis_gemoma_evm_mod.gff3
 
-#annotation genemark-es, puhti, dont't use mahti
+#annotation genemark-es, puhti
 module load bioperl
 cd ../annotation
 ./gmes_linux_64_4/gmes_petap.pl --ES --cores 40 --sequence Pa_noorganelle.asm.bp.p_ctg.wrapped.FINAL.sorted.gapclose.finalrenamed.fasta
@@ -37,7 +37,7 @@ samtools sort -@ 40 Aligned.out.sam -o Aligned.out.bam.sort -O BAM
 awk '{ print "./"$1"/Aligned.out.bam.sort" }' name.list > bam.list
 samtools merge -o merged_20.bam -b bam.list -@40
 
-#mahti
+#
 cd /scratch/braker
 wget https://bioinf.uni-greifswald.de/bioinf/partitioned_odb11/Viridiplantae.fa.gz
 gunzip Viridiplantae.fa.gz
@@ -60,7 +60,7 @@ singularity exec -B /scratch/RNAseq/:/scratch/RNAseq/ -B ${PWD}:${PWD} --env AUG
 #script from EVM,
 perl ./braker_GTF_to_EVM_GFF3.pl  braker.gtf > braker.evm_mod.gff3
 
-#trinity, on mahti
+#trinity
 cd /scratch/trinity
 ln -s /scratch/RNAseq/merged_20.bam .
 singularity exec -B /scratch/RNAseq:/scratch/RNAseq -B ${PWD}:${PWD} -e trinityrnaseq.v2.15.1.simg  Trinity --genome_guided_bam merged.bam --genome_guided_max_intron 10000 --max_memory 230G --CPU 128
@@ -74,7 +74,7 @@ cat transcripts.fasta Trinity-GG.fasta > transcripts_all.fasta
 #cyrus
 conda activate ltr_retriever 
 cd-hit-est -i transcripts_all.fasta -o transcripts_all.cdhit.fasta -n 10 -c 0.95 -d 0 -M 20000 -T 40
-#mahti
+#
 cd /scratch/pasa
 singularity exec -B ${PWD}:${PWD} pasapipeline.v2.5.3.simg seqclean transcripts_all.cdhit.fasta
 ln -s /scratch/genome/Pa_noorganelle.asm.bp.p_ctg.wrapped.FINAL.sorted.gapclose.finalrenamed.fasta .
@@ -90,7 +90,7 @@ perl /opt/EVidenceModeler/EvmUtils/misc/genemark_gtf2gff3.pl genemark.gtf > gene
 #take the script from evidencemodlder/evmutils, augustus_GTF_to_EVM_GFF3.pl
 /opt/EVidenceModeler/EvmUtils/misc/augustus_GTF_to_EVM_GFF3.pl augustus.hints.gtf > augustus_evm_mod.gff3
 
-#mahti,install evidencemodler
+#install evidencemodler
 cd /scratch/EVM
 export SINGULARITY_TMPDIR=/scratch/EVM
 export SINGULARITY_CACHEDIR=/scratch/EVM
