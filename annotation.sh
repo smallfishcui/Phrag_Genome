@@ -25,7 +25,7 @@ cd ../annotation
 perl /opt/EVidenceModeler/EvmUtils/misc/genemark_gtf2gff3.pl genemark.gtf > genemark_evm_mod.gff3 
 mv genemark_evm_mod.gff3  genemark_es_evm_mod.gff3
 
-#braker, puhti
+#braker
 module load biokit
 cd /scratch/annotation/RNAseq
 name=$(sed -n ${SLURM_ARRAY_TASK_ID}p name.list)
@@ -49,7 +49,7 @@ ln -s /scratch/repeat/Pa_noorganelle.asm.bp.p_ctg.wrapped.FINAL.sorted.gapclose.
 ln -s /scratch/RNAseq/*.fastq.gz .
 paste -sd, name.list > name.comma.list
 singularity exec -B ${PWD}:${PWD} --env AUGUSTUS_CONFIG_PATH=/scratch/braker/Augustus/config/ braker3.sif braker.pl --species=Paustralis --genome=Pa_noorganelle.asm.bp.p_ctg.wrapped.FINAL.sorted.gapclose.finalrenamed.fasta.masked \
-       --rnaseq_sets_ids=R20033279-P200805-SD-S136-1,R20033279-P200805-SD-S15-1,R20033279-P200805-SD-S150-1,R20033279-P200805-SD-S162-1,R20033279-P200805-SD-S174-1,R20033279-P200805-SD-S188-1,R20033279-P200805-SD-S188-2,R20033279-P200805-SD-S191-1,R20033279-P200805-SD-S207-1,R20033279-P200805-SD-S620-1,R20033279-P200805-SD-S68-1,R20033279-P200805-SD-lanzhou-1,R20033279-P200805-SD-yuncheng-1,SRR16648326,SRR16648327,SRR16648328,SRR16648329,SRR16648330,SRR16648331,SRR16648332,Unknown_BA854-01T0001,Unknown_BA854-01T0002,Unknown_BA854-01T0003 --rnaseq_sets_dirs=./ --threads=$OMP_NUM_THREADS --busco_lineage=poales_odb10
+       --rnaseq_sets_ids=R20033279-P200805-SD-S136-1,R20033279-P200805-SD-S15-1,R20033279-P200805-SD-S150-1,R20033279-P200805-SD-S162-1,R20033279-P200805-SD-S174-1,R20033279-P200805-SD-S188-1,R20033279-P200805-SD-S188-2,R20033279-P200805-SD-S191-1,R20033279-P200805-SD-S207-1,R20033279-P200805-SD-S620-1,R20033279-P200805-SD-S68-1,R20033279-P200805-SD-lanzhou-1,R20033279-P200805-SD-yuncheng-1,SRR16648326,SRR16648327,SRR16648328,SRR16648329,SRR16648330,SRR16648331,SRR16648332 --rnaseq_sets_dirs=./ --threads=$OMP_NUM_THREADS --busco_lineage=poales_odb10
 singularity exec -B ${PWD}:${PWD} --env AUGUSTUS_CONFIG_PATH=/scratch/braker/Augustus/config/ braker3.sif braker.pl --genome=Pa_noorganelle.asm.bp.p_ctg.wrapped.FINAL.sorted.gapclose.finalrenamed.fasta.masked \
       --prot_seq=./Viridiplantae.fa --threads=$OMP_NUM_THREADS --busco_lineage=poales_odb10
 #etp
