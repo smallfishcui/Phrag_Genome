@@ -1,4 +1,5 @@
-#
+#######This script is modified from an original script developed by Sitaram Rajaraman. Thanks Sitaram for sharing!
+
 singularity run dfam-tetools-latest.sif BuildDatabase -engine ncbi -name phrag Pa_noorganelle.asm.bp.p_ctg.wrapped.FINAL.sorted.gapclose.finalrenamed.fasta
 singularity run dfam-tetools-latest.sif RepeatModeler -database phrag -engine ncbi -threads 128 
 #make sure you softlink the classified file, otherwise you will not get a table of classified elements after the run.
